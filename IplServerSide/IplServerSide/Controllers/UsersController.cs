@@ -32,5 +32,22 @@ namespace IplServerSide.Controllers
             _userService.ChangePassword(userData, userId);
             return Ok();
         }
+
+        [Route("SaveUserSubscription")]
+        [HttpPost]
+        public IHttpActionResult SaveUserSubscription([FromBody] dynamic subscriptionData)
+        {
+            var userId = UserHelper.GetUserId(User.Identity);
+            _userService.SaveUserSubscription(subscriptionData.subscriptionObject?.ToString(), userId);
+            return Ok();
+        }
+
+        [Route("GetUserWinningPercentage")]
+        public IHttpActionResult GetUserWinningPercentage()
+        {
+           var userDetails = _userService.GetUserWinningPercentage();
+            return Ok(userDetails);
+        }
+
     }
 }

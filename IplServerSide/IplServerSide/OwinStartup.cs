@@ -22,7 +22,7 @@ namespace IplServerSide
                 //The Path For generating the Toekn
                 TokenEndpointPath = new PathString("/token"),
                 //Setting the Token Expired Time (24 hours)
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(2),
+                AccessTokenExpireTimeSpan = TimeSpan.FromHours(6),
                 //MyAuthorizationServerProvider class will validate the user credentials
                 Provider = new AuthorizationServerProvider()
             };

@@ -50,5 +50,19 @@ namespace IplServerSide.Controllers
             var currentBets = _bettingService.GetCurrentBets(userId);
             return Ok(currentBets);
         }
+
+        [Route("GetOtherUsersBets/{matchId}")]
+        public IHttpActionResult GetOtherUsersBets(int matchId)
+        {
+            var otherUsersBets = _bettingService.GetOtherUsersBets(matchId);
+            return Ok(otherUsersBets);
+        }
+
+        [Route("GetAmountOwnByUsers/{matchId}")]
+        public IHttpActionResult GetAmountOwnByUsers(int matchId)
+        {
+            var otherUsersBets = _bettingService.GetAmountOwnByUsers(matchId);
+            return Ok(otherUsersBets);
+        }
     }
 }

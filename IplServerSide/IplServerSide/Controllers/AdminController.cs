@@ -6,7 +6,7 @@ using System.Web.Http;
 namespace IplServerSide.Controllers
 {
     [RoutePrefix("api/admin")]
-   // [Authorize(Roles = nameof(UserRoleEnum.Admin))]
+    [Authorize(Roles = nameof(UserRoleEnum.Admin))]
     public class AdminController : ApiController
     {
         private readonly AdminService _adminService;
@@ -54,10 +54,10 @@ namespace IplServerSide.Controllers
         }
 
         [Route("SendNotification")]
-        [HttpGet]
-        public IHttpActionResult SendNotification()
+        [HttpPost]
+        public IHttpActionResult SendNotification([FromBody] NotificationChild notificationData)
         {
-            _adminService.SendNotifications();
+            _adminService.SendNotifications(notificationData);
             return Ok();
         }
     }

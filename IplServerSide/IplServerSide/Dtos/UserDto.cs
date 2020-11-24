@@ -20,6 +20,8 @@ namespace IplServerSide.Dtos
         public int UserRole { get; set; }
         public decimal UserAmount { get; set; }
 
+        public int WinningPercentage { get; set; }
+
         //public bool IsAllowedToBet { get; set; }
 
         public List<int> UsersFutureBets { get; set; }

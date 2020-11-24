@@ -1,7 +1,8 @@
-﻿using System;
-using IplServerSide.Core.Repositories;
+﻿using IplServerSide.Core.Repositories;
 using IplServerSide.Dtos;
 using IplServerSide.Models;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebPush;
@@ -11,10 +12,13 @@ namespace IplServerSide.Core.Services
     public class AdminService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public AdminService(IUnitOfWork unitOfWork)
+        private readonly BettingContext _bettingContext;
+        private const string Public_Key = @"BDk-QSoBtl9BNgY5mGVzP9iiUtAdQFPsnUl3VwnZz05zO54OsS_d8yiBxrdubhd236AWcx0E2E0JFfVo1t-sc0E";
+        private const string Private_Key = @"LaUAkhjAM7G16wNevX0CJTQPzpLFrI_jR0mYpK9IXeI";
+        public AdminService(IUnitOfWork unitOfWork, BettingContext bettingContext)
         {
             _unitOfWork = unitOfWork;
+            _bettingContext = bettingContext;
         }
 
         public void UpdateResult(MatchDto matchDetails)
@@ -40,30 +44,53 @@ namespace IplServerSide.Core.Services
             //_unitOfWork.Complete();
         }
 
-        public void SendNotifications()
+        public void SendNotifications(NotificationChild notificationInformation)
         {
-            var pushEndpoint = @"https://updates.push.services.mozilla.com/wpush/v2/gAAAAABffvNfQBFET4_UJ4BvERuieBAbQdARo_b4ITWhzt2rKfrTFZqlGvlmXhinlVPRJAh0MQ3psmdm0LxWpsX6NuG7jbUP13cVPiXrqU0SvxZt0Xzrify5j6mvj-J3SP8VirRMrRB0GOUT2MRtge4TKPaLrKNFyKPZL156UErRqNB82j47qPQ";
-            var p256dh = @"BFSKNo0F7rYR8jWI1pzwh-HcKK1A9pR7rsRejutIxbuAaQSnCgypByTu29HWpqXHcSu57uPHrv-GeXmHjMqrfAE";
-            var auth = @"zlYiYpf1-QRyy-uFtDFv8g";
 
+            var users = _unitOfWork.Users.GetAll().ToDictionary(x => x.UserId, y=> y.DisplayName);
+            var userNotifications = _bettingContext.UserNotifications.ToList();
             var subject = @"mailto:example@example.com";
-            var publicKey = @"BDk-QSoBtl9BNgY5mGVzP9iiUtAdQFPsnUl3VwnZz05zO54OsS_d8yiBxrdubhd236AWcx0E2E0JFfVo1t-sc0E";
-            var privateKey = @"LaUAkhjAM7G16wNevX0CJTQPzpLFrI_jR0mYpK9IXeI";
-
-            var subscription = new PushSubscription(pushEndpoint, p256dh, auth);
-            var vapidDetails = new VapidDetails(subject, publicKey, privateKey);
-            //var gcmAPIKey = @"[your key here]";
-            var notification = "{\"notification\":{\"title\":\"Hi Varun\",\"body\":\"Today's winner is Rama!!\",\"icon\":\"https://www.shareicon.net/data/256x256/2015/10/02/110808_blog_512x512.png \",\"vibrate\":[100,50,100],\"data\":{\"url\":\"https://iplbet.tk\"}}}";
             var webPushClient = new WebPushClient();
-            try
+            userNotifications.ForEach(userNotification =>
             {
-                webPushClient.SendNotification(subscription, notification, vapidDetails);
-                //webPushClient.SendNotification(subscription, "payload", gcmAPIKey);
-            }
-            catch (WebPushException exception)
+
+                var subscriptionDetails = JsonConvert.DeserializeObject<SubscriptionObject>(userNotification.NotificationObject);
+                var endPoint = subscriptionDetails.endpoint;
+                var p256dh = subscriptionDetails.keys.p256dh;
+                var auth = subscriptionDetails.keys.auth;
+
+                if (string.IsNullOrWhiteSpace(endPoint) || string.IsNullOrWhiteSpace(p256dh) || string.IsNullOrWhiteSpace(auth)) return;
+                var subscription = new PushSubscription(endPoint, p256dh, auth);
+                var vapidDetails = new VapidDetails(subject, Public_Key, Private_Key);
+
+                var notificationDetails = GetNotificationDetails(notificationInformation, userNotification.UserId, users);
+                try
+                {
+                    webPushClient.SendNotification(subscription, JsonConvert.SerializeObject(notificationDetails), vapidDetails);
+                }
+                catch (WebPushException exception)
+                {
+                    Console.WriteLine("Http STATUS code" + exception.StatusCode);
+                }
+            });
+        }
+
+        private Notification GetNotificationDetails(NotificationChild notificationChild, int userId, Dictionary<int,string> userDetails)
+        {
+            return new Notification()
             {
-                Console.WriteLine("Http STATUS code" + exception.StatusCode);
-            }
+                notification = new NotificationChild()
+                {
+                    title = string.IsNullOrWhiteSpace(notificationChild.title) ? $"Hi {userDetails.First(x => x.Key == userId).Value}!!": notificationChild.title,
+                    body = string.IsNullOrWhiteSpace(notificationChild.body) ? "Start betting!!": notificationChild.body,
+                    icon = string.IsNullOrWhiteSpace(notificationChild.icon) ? "/assets/icons/icon-96x96.png" : $"/assets/icons/{notificationChild.icon}.png",
+                    tag = "iplbet",
+                    badge= "/assets/icons/icon-96x96.png",
+                    lang="en-US",
+                    renotify = true,
+                    vibrate = new int[] { 100, 50, 100 }
+                }
+            };
         }
 
         #region Private methods
@@ -110,7 +137,7 @@ namespace IplServerSide.Core.Services
             var users = _unitOfWork.Users.Find(user => bettingUserIds.Contains(user.UserId)).ToList();
             users.ForEach(user =>
             {
-                var amt = bets.FirstOrDefault(x => x.UserId == user.UserId && x.NetAmountWon > 0);
+                var amt = bets.FirstOrDefault(x => x.UserId == user.UserId && x.NetAmountWon >= 0);
                 if (amt != null)
                     user.UserAmount += amt.BetAmount + amt.NetAmountWon.GetValueOrDefault();
             });

@@ -85,6 +85,7 @@ namespace IplServerSide.Core.Services
                     WinningTeamIdOrTeamBId = bet.WinningTeamId.Value,
                     MatchDate = match.MatchDateTime,
                     NetAmountWon = bet.NetAmountWon,
+                    MatchId = bet.MatchId
 
                 };
           return bets.OrderByDescending(x => x.MatchDate).ToList();
@@ -110,6 +111,38 @@ namespace IplServerSide.Core.Services
                     MatchId = bet.MatchId
                 };
             return bets.OrderBy(x => x.MatchDate).ToList();
+        }
+
+        public List<DisplayBetsDto> GetOtherUsersBets(int matchId)
+        {
+            var bets = from bet in _bettingContext.Bets
+                       join user in _bettingContext.Users on bet.UserId equals user.UserId
+                       join teamA in _bettingContext.Teams on bet.BettingTeamId equals teamA.TeamId
+                       where bet.MatchId == matchId && bet.WinningTeamId == null && bet.NetAmountWon == null 
+                       orderby bet.BettingDate descending
+                       select new DisplayBetsDto()
+                       {
+                           BetAmount = bet.BetAmount,
+                           BettingTeamNameOrTeamA = teamA.TeamShortName,
+                           UserName = user.DisplayName
+                       };
+            return bets.ToList();
+        }
+
+        public List<DisplayBetsDto> GetAmountOwnByUsers(int matchId)
+        {
+            var bets = from bet in _bettingContext.Bets
+                       join user in _bettingContext.Users on bet.UserId equals user.UserId
+                       join teamA in _bettingContext.Teams on bet.BettingTeamId equals teamA.TeamId
+                       where bet.MatchId == matchId && bet.WinningTeamId != null && bet.NetAmountWon != null
+                       orderby bet.NetAmountWon descending
+                       select new DisplayBetsDto()
+                       {
+                           NetAmountWon = bet.NetAmountWon,
+                           BettingTeamNameOrTeamA = teamA.TeamShortName,
+                           UserName = user.DisplayName
+                       };
+            return bets.ToList();
         }
 
         private void ValidateTheBet(DisplayBetsDto betDetails, int userId, decimal walletAmount)

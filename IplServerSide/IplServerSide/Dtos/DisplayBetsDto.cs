@@ -11,7 +11,9 @@ namespace IplServerSide.Dtos
         public int TeamBId {get;set; }
         public decimal? NetAmountWon { get; set; }
         public DateTimeOffset MatchDate { get; set; }
-        
+
+        public string UserName { get; set; }
+
         public bool IsBetDeleted { get; set; }
     }
 }

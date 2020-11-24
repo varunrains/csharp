@@ -227,6 +227,7 @@
     <Compile Include="Dtos\BetDto.cs" />
     <Compile Include="Dtos\DisplayBetsDto.cs" />
     <Compile Include="Dtos\MatchDto.cs" />
+    <Compile Include="Dtos\NotificationDto.cs" />
     <Compile Include="Dtos\UserDto.cs" />
     <Compile Include="Enums\UserRoleEnum.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
@@ -246,11 +247,16 @@
     <Compile Include="Migrations\202010040455061_removedUnusedColumns.designer.cs">
       <DependentUpon>202010040455061_removedUnusedColumns.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202010100855278_addingUserNotification.cs" />
+    <Compile Include="Migrations\202010100855278_addingUserNotification.designer.cs">
+      <DependentUpon>202010100855278_addingUserNotification.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ModelConfigurations\BetConfiguration.cs" />
     <Compile Include="ModelConfigurations\MatchConfiguration.cs" />
     <Compile Include="ModelConfigurations\TeamConfiguration.cs" />
     <Compile Include="ModelConfigurations\UserConfiguration.cs" />
+    <Compile Include="ModelConfigurations\UserNotificationConfiguration.cs" />
     <Compile Include="Models\Bet.cs" />
     <Compile Include="BettingContext.cs" />
     <Compile Include="Models\Match.cs" />
@@ -258,6 +264,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\IplAutomapperProfile.cs" />
+    <Compile Include="Models\UserNotification.cs" />
     <Compile Include="OwinStartup.cs" />
     <Compile Include="Persistence\BetRepository.cs" />
     <Compile Include="Persistence\MatchRepository.cs" />
@@ -301,6 +308,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202010040455061_removedUnusedColumns.resx">
       <DependentUpon>202010040455061_removedUnusedColumns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202010100855278_addingUserNotification.resx">
+      <DependentUpon>202010100855278_addingUserNotification.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

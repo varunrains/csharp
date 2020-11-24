@@ -1,9 +1,8 @@
 using IplServerSide.Enums;
-
+using System.Collections.Generic;
 namespace IplServerSide.Models
 {
-    using System.Collections.Generic;
-
+    
     public partial class User
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -30,5 +29,7 @@ namespace IplServerSide.Models
 
        // [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bet> Bets { get; set; }
+
+        public virtual ICollection<UserNotification> UserNotifications { get; set; }
     }
 }

@@ -1,10 +1,12 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
+using AutoMapper.Internal;
+using IplServerSide.Core.Repositories;
 using IplServerSide.Dtos;
 using IplServerSide.Enums;
 using IplServerSide.Models;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using IplServerSide.Core.Repositories;
 
 namespace IplServerSide.Core.Services
 {
@@ -57,6 +59,40 @@ namespace IplServerSide.Core.Services
 
             currentUser.PassKey = userData.NewPassword;
             _unitOfWork.Complete();
+        }
+
+        public void SaveUserSubscription(string notificationObject, int userId)
+        {
+            if (string.IsNullOrWhiteSpace(notificationObject)) return;
+            var userNotification = new UserNotification()
+            {
+                UserId = userId,
+                NotificationObject = notificationObject
+            };
+            _bettingContext.UserNotifications.Add(userNotification);
+            _bettingContext.SaveChanges();
+        }
+
+        public List<UserDto> GetUserWinningPercentage()
+        {
+            var userBets = _bettingContext.Bets.Where(b => b.WinningTeamId != null && b.NetAmountWon != null).GroupBy(bet => bet.UserId).ToList();
+            Dictionary<int, int> userDetail = new Dictionary<int, int>();
+            userBets.ForEach(grp =>
+            {
+                if(grp.Count() > 3)
+                {
+                   
+                    var winPercentage =  (grp.Where(bet => bet.BettingTeamId == bet.WinningTeamId).Count() /(decimal) grp.Count())  * 100;
+                    userDetail.Add(grp.Key, (int)winPercentage);
+                }
+            });
+            var userDetails = _bettingContext.Users.Where(user => userDetail.Keys.Contains(user.UserId)).ToList().Select(x => new UserDto()
+            {
+                UserName = x.UserName,
+                WinningPercentage = userDetail.GetOrDefault(x.UserId)
+            }).OrderByDescending(x => x.WinningPercentage).ToList();
+
+            return userDetails;
         }
     }
 }
