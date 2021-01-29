@@ -1,0 +1,6 @@
+﻿namespace TextToSrt
+{
+    class Captions
+    {
+    }
+}
