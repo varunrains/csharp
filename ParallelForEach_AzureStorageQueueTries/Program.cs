@@ -19,6 +19,11 @@ namespace ParallelForEach_AzureStorageQueueTries
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddHostedService<Worker>();
-                });
+                })
+                .ConfigureWebJobs(job =>
+                {
+                    job.AddAzureStorage();
+                })
+                .UseWindowsService();
     }
 }
