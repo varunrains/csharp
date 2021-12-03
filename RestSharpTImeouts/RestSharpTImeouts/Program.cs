@@ -77,14 +77,14 @@ namespace RestSharpTImeouts
         private  dynamic MethodCheck(int timeout)
         {
            
-           // var request = new RestRequest("https://comlimsquotationservices-ph.eurofins.local/Quotation/v1/QuotationItems?QuotationCode=Q7MFPH190365&QuotationVersionNumber=29", Method.GET);
-            var request = new RestRequest("https://comlimsquotationservices-ph.eurofinsbpt.com/Quotation/v1/QuotationInformation/UCMM20170003", Method.GET);
+           // var request = new RestRequest("https://curl/QuotationItems?QuotationCode=Q7MFPH190365&QuotationVersionNumber=29", Method.GET);
+            var request = new RestRequest("https://cURL", Method.GET);
             request.Credentials = new NetworkCredential()
            {
-                Domain = "eurofinsbpt",
-               UserName = "US19_SVC_eLIMS MSCRM",
-               //Password = "W0^mNY=wfI58t8dG`$as"
-                Password = "V)=xHUw=QT?b9c@_"
+                Domain = "sdd",
+               UserName = "USRNAME",
+            
+                Password = "passs"
             };
            _client.Timeout = timeout;
             var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();
@@ -101,11 +101,9 @@ namespace RestSharpTImeouts
         {
             RestRequest request;
             Random rand = new Random();
-            request = rand.Next(2) == 1 ? new RestRequest("http://in01apvt076:65435//api/quotations/getitemwithincludes/Q7MFPH19036529?appVersion=9.8.1&includePreActive=true", Method.GET) :
-             new RestRequest("http://in01apvt076:65435//api/quotations/getitemwithincludes/E7VKPH190269?appVersion=9.8.1&includePreActive=true", Method.GET);
-            //  request = new RestRequest("http://in01apvt076:65435/api/currencies", Method.GET);
-            //var request = new RestRequest("http://in01apvt172:65435//api/quotations/getitemwithincludes/Q7MFPH19036529?appVersion=9.8.1&includePreActive=true", Method.GET);
-            // request = rand.Next(2) == 1 ? new RestRequest("http://in01apvt076:65435//api/currencies/Q7MFPH190365/29", Method.GET) : new RestRequest("http://in01apvt076:65435//api/currencies/E7VKPH190269/46", Method.GET);
+            request = rand.Next(2) == 1 ? new RestRequest("http://ss", Method.GET) :
+             new RestRequest("http://iss", Method.GET);
+           
            // Thread.Sleep(rand.Next(300));
             request.Credentials = new NetworkCredential()
             {

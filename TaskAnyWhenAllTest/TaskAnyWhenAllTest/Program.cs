@@ -14,7 +14,7 @@ namespace TaskAnyWhenAllTest
     {
         //https://stackoverflow.com/questions/55495569/parallel-invoke-vs-await-async-task-performance
         //https://dev.to/scotthannen/concurrency-vs-parallel-vs-async-in-net-3812
-        RestClient _client = new RestClient("https://comlimsquotationservices-ph.eurofins.local/");
+        RestClient _client = new RestClient("https://URL");
         static async Task Main(string[] args)
         {
             List<string> ss = new List<string>(){ "gg", "dss" };
@@ -95,8 +95,8 @@ namespace TaskAnyWhenAllTest
                 var request = new RestRequest("Quotation/v1/QuotationItems?QuotationCode=Q7MFPH190365&QuotationVersionNumber=29", Method.GET);
                 request.Credentials = new NetworkCredential()
                 {
-                    UserName = "US19_SVC_eLIMS MSCRM",
-                    Password = "W0^mNY=wfI58t8dG`$as"
+                    UserName = "USERNAME",
+                    Password = "PASSWORD"
                 };
                 p._client.Timeout = 100000;
                 //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();
@@ -118,8 +118,8 @@ namespace TaskAnyWhenAllTest
             var request = new RestRequest("Quotation/v1/QuotationItems?QuotationCode=Q7MFPH190365&QuotationVersionNumber=29", Method.GET);
             request.Credentials = new NetworkCredential()
             {
-                UserName = "US19_SVC_eLIMS MSCRM",
-                Password = "W0^mNY=wfI58t8dG`$as"
+                UserName = "USERNAME",
+                    Password = "PASSWORD"
             };
             p._client.Timeout = 100000;
             //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -11,38 +12,38 @@ namespace McAfeeCommandLineAntiVirusScan
 {
     class Program
     {
-        public static Dictionary<int, string> pathToScan = new Dictionary<int, string>();
-        public static Stopwatch timer = new Stopwatch();
+        public static ConcurrentDictionary<int, string> pathToScan = new ConcurrentDictionary<int, string>();
+        //public static Stopwatch timer = new Stopwatch();
         static void Main(string[] args)
         {
-            var numberOfParallelInstance = 12;
-            timer.Start();
-            pathToScan.Add(1, @"C:\AntiVirusTest\5mb");
-            pathToScan.Add(2, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(3, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(4, @"C:\AntiVirusTest\filesToScan");
+            var numberOfParallelInstance = 1;
+            //timer.Start();
+            pathToScan.TryAdd(1, @"C:\AntiVirusTest\5mb");
+            pathToScan.TryAdd(2, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(3, @"C:\AntiVirusTest\Files");
+            pathToScan.TryAdd(4, @"C:\AntiVirusTest\filesToScan");
 
-            pathToScan.Add(5, @"C:\AntiVirusTest\ScanFolder1");
-            pathToScan.Add(6, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(7, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(8, @"C:\AntiVirusTest\filesToScan");
-            pathToScan.Add(9, @"C:\AntiVirusTest\ScanFolder1");
-            pathToScan.Add(10, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(11, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(12, @"C:\AntiVirusTest\filesToScan");
-            pathToScan.Add(13, @"C:\AntiVirusTest\5mb");
-            pathToScan.Add(14, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(15, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(16, @"C:\AntiVirusTest\filesToScan");
+            pathToScan.TryAdd(5, @"C:\AntiVirusTest\ScanFolder1");
+            pathToScan.TryAdd(6, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(7, @"C:\AntiVirusTest\Files");
+            pathToScan.TryAdd(8, @"C:\AntiVirusTest\filesToScan");
+            pathToScan.TryAdd(9, @"C:\AntiVirusTest\ScanFolder1");
+            pathToScan.TryAdd(10, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(11, @"C:\AntiVirusTest\Files");
+            pathToScan.TryAdd(12, @"C:\AntiVirusTest\filesToScan");
+            pathToScan.TryAdd(13, @"C:\AntiVirusTest\5mb");
+            pathToScan.TryAdd(14, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(15, @"C:\AntiVirusTest\Files");
+            pathToScan.TryAdd(16, @"C:\AntiVirusTest\filesToScan");
 
-            pathToScan.Add(17, @"C:\AntiVirusTest\ScanFolder1");
-            pathToScan.Add(18, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(19, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(20, @"C:\AntiVirusTest\filesToScan");
-            pathToScan.Add(21, @"C:\AntiVirusTest\ScanFolder1");
-            pathToScan.Add(22, @"C:\AntiVirusTest\ScanFolder");
-            pathToScan.Add(23, @"C:\AntiVirusTest\Files");
-            pathToScan.Add(24, @"C:\AntiVirusTest\filesToScan");
+            pathToScan.TryAdd(17, @"C:\AntiVirusTest\ScanFolder1");
+            pathToScan.TryAdd(18, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(19, @"C:\AntiVirusTest\5mb");
+            pathToScan.TryAdd(20, @"C:\AntiVirusTest\filesToScan");
+            pathToScan.TryAdd(21, @"C:\AntiVirusTest\40mb");
+            pathToScan.TryAdd(22, @"C:\AntiVirusTest\ScanFolder");
+            pathToScan.TryAdd(23, @"C:\AntiVirusTest\Files");
+            pathToScan.TryAdd(24, @"C:\AntiVirusTest\filesToScan");
 
             Console.WriteLine($"Number of parallel scans :: {numberOfParallelInstance}");
             Parallel.ForEach(Enumerable.Range(1, numberOfParallelInstance), (i) =>
@@ -55,12 +56,13 @@ namespace McAfeeCommandLineAntiVirusScan
 
         }
 
-        public static void ExecuteVirusScan(string pathToScan)
+        public static void ExecuteVirusScan(string path)
         {
+            var timer = Stopwatch.StartNew();
             var batchName = Guid.NewGuid().ToString();
             var reportFilePath = $"{Path.Combine(@"C:\AntiVirusTest\ReportFolder", batchName)}";
            // var scanPathFolder = $"{Path.Combine(@"C:\AntiVirusTest\ScanFolder1")}";
-            var scanPathFolder = $"{Path.Combine(pathToScan)}";
+            var scanPathFolder = $"{Path.Combine(path)}";
 
             // Pass in a space-separated list of the uploaded files to be scanned which replaces placeholder
             // and replace placeholder with actual reportFilePath
@@ -89,7 +91,7 @@ namespace McAfeeCommandLineAntiVirusScan
                     dirSize += file.Length;
                 }
 
-                Console.WriteLine($"Time taken: {timer.Elapsed.Seconds} seconds for size :{(dirSize/1000)/1000} MB");
+                Console.WriteLine($"Time taken: {timer.Elapsed.Minutes} minute {timer.Elapsed.Seconds} seconds for size :{(dirSize/1000)/1000} MB");
                 Console.ReadKey();
             }
             catch (Exception ex)

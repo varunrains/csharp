@@ -292,9 +292,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Properties\PublishProfiles\iplbet - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\iplbet - ReadOnly - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\iplbet - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\iplt2021 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\iplt2021 - ReadOnly - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\iplt2021 - Web Deploy.pubxml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202009201451065_InitialModel.resx">
