@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using GetCryptoHolders.Dtos;
 using System.Text;
 using System.Threading;
+using PuppeteerSharp;
 
 namespace GetCryptoHolders.Services
 {
@@ -44,6 +45,55 @@ namespace GetCryptoHolders.Services
             //TokenSymbolAndAddress.Add("EGLD", "0xbf7c81fff98bbe61b40ed186e4afd6ddd01337fe");
             //TokenSymbolAndAddress.Add("EOS", "0x56b6fb708fc5732dec1afc8d8556423a2edccbd6");
         }
+
+        public async Task GetHolders1()
+        {
+            string fullUrl = "https://etherscan.io/token/0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0#balances";
+
+            List<string> programmerLinks = new List<string>();
+
+            var options = new LaunchOptions()
+            {
+                Headless = false,
+                ExecutablePath = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+            };
+            //var browser = await Puppeteer.LaunchAsync(options, null);
+            //var page = await browser.NewPageAsync();
+            //await page.GoToAsync(fullUrl);
+            //var links = @"Array.from(document.querySelectorAll('a')).map(a => a.href);";
+            //var urls = await page.EvaluateExpressionAsync<string[]>(links);
+
+            using (var browser = await Puppeteer.LaunchAsync(options))
+            using (var page = await browser.NewPageAsync())
+            {
+                var navigation = new NavigationOptions
+                {
+                    Timeout = 0,
+                    WaitUntil = new[] {
+                        WaitUntilNavigation.DOMContentLoaded }
+                };
+                await page.GoToAsync(fullUrl, navigation);
+                // Type into search box.
+                //await page.TypeAsync("#searchbox input", "Headless Chrome");
+
+                // Wait for suggest overlay to appear and click "show all results".
+               // var allResultsSelector = ".table table-md-text-normal table-hover";
+                var allResultsSelector = "#ContentPlaceHolder1_tabHolders";
+                await page.WaitForSelectorAsync(allResultsSelector);
+               // await page.ClickAsync(allResultsSelector);
+               // Thread.Sleep(10 * 1000);
+                var ds = await page.GetContentAsync();
+                // continue the operation 
+            }
+
+
+            //foreach (string url in urls)
+            //{
+            //    programmerLinks.Add(url);
+            //}
+        }
+
+
         public async Task GetHolders()
         {
             //https://bscscan.com/token/0x111111111117dc0aa78b770fa6a738034120c302
@@ -54,12 +104,14 @@ namespace GetCryptoHolders.Services
             {
                 try
                 {
-                    string baseUrl = BcsScanTokens.Contains(token.Key) ? "https://bscscan.com/token/" : "https://etherscan.io/token/";
+                    //string baseUrl = BcsScanTokens.Contains(token.Key) ? "https://bscscan.com/token/" : "https://etherscan.io/token/";
+
+                    var baseUrl = "https://etherscan.io/token/generic-tokenholders2?m=normal&a=0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0&p=1";
                     var restClient = new RestClient(baseUrl);
 
                     var request = new RestRequest()
                     {
-                        Resource = $"{token.Value}#balances"
+                        //Resource = $"{token.Value}#balances"
                     };
 
                      var response = await restClient.ExecuteTaskAsync(request).ConfigureAwait(false);
@@ -67,21 +119,21 @@ namespace GetCryptoHolders.Services
                     // restClient.
                     //var responses = restClient.DownloadData(request);
                     //var st = Encoding.UTF8.GetString(responses);
-                    EventWaitHandle Wait = new AutoResetEvent(false);
+                   // EventWaitHandle Wait = new AutoResetEvent(false);
 
-                    restClient.ExecuteAsync(request, response =>
-                    {
-                        Thread.Sleep(20 * 1000);
-                        if (response.ResponseStatus == ResponseStatus.Completed)
-                        {
-                            RestResponse resource = (RestResponse)response;
-                            string content = resource.Content;
-                            //resp = Convert.ToBoolean(JsonHelper.FromJson<string>(content));
-                            Wait.Set();
-                        }
-                    });
+                    //restClient.ExecuteAsync(request, response =>
+                    //{
+                    //    Thread.Sleep(20 * 1000);
+                    //    if (response.ResponseStatus == ResponseStatus.Completed)
+                    //    {
+                    //        RestResponse resource = (RestResponse)response;
+                    //        string content = resource.Content;
+                    //        //resp = Convert.ToBoolean(JsonHelper.FromJson<string>(content));
+                    //        Wait.Set();
+                    //    }
+                    //});
 
-                    Wait.WaitOne();
+                    //Wait.WaitOne();
                     //var ds = response;
                     ParseTheAverageHoldingOfTopTenWalletHolders(response, token.Key);
                     //if (BcsScanTokens.Contains(token.Key))

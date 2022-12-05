@@ -1,0 +1,26 @@
+
+<mat-toolbar color="primary">
+  <a class="title" href="/">{{ title }}</a>
+
+  <div class="toolbar-spacer"></div>
+
+  <a mat-button [routerLink]="['home']">Home</a>
+  <a mat-button [routerLink]="['Study-view']">Studies</a>
+  <a mat-button *ngIf="loginDisplay" [routerLink]="['Volunteer-view']">Volunteers</a>
+
+  <!--<button mat-button *ngIf="loginDisplay" (click)="editProfile()">Edit Profile</button>-->
+  <button mat-raised-button *ngIf="!loginDisplay" (click)="login()">Login</button>
+  <button mat-raised-button color="accent" *ngIf="loginDisplay" (click)="logout()">Logout</button>
+</mat-toolbar>
+<div class="container">
+  <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+  <router-outlet *ngIf="!isIframe"></router-outlet>
+</div>
+
+<footer *ngIf="loginDisplay">
+  <mat-toolbar>
+    <div class="footer-text">
+      How did we do? <a href="www.eurofins.com" target="_blank"> Share your experience with us!</a>
+    </div>
+  </mat-toolbar>
+</footer>

@@ -9,6 +9,7 @@ namespace GetCryptoHolders.Dtos
     {
         public string TokenName { get; set; }
         public string Date { get; set; }
+
         public string NumberOfTokenHolders { get; set; }
     }
 }
