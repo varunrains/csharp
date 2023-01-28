@@ -18,11 +18,11 @@
     },
 
     {
-      "DownstreamPathTemplate": "https://inquirum.eu.prod.com/{}",
+      "DownstreamPathTemplate": "https://inqui/{}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "inquirum.eu.prod.com",
+          "Host": "om",
           "Port": 44345
         }
       ],
