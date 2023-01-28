@@ -34,8 +34,8 @@ namespace ocelot_gateway
           .AddAuthentication()
            .AddJwtBearer("FAMSConfig", options =>
            {
-               options.Authority = "https://uat.id.eurofins.com";
-               options.Audience = "HeliumSPA";
+               options.Authority = "";
+               options.Audience = "";
 
                options.RequireHttpsMetadata = false;
 

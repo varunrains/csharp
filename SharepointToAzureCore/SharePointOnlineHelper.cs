@@ -20,7 +20,7 @@ namespace SharepointToAzureCore
         private const int CacheDuration = 60 * 24 * 30;
         public SharePointOnlineHelper(IOptions<BptConfiguration> bptConfiguration)
         {
-            //var locationUrl = "https://eurofinsbpt.sharepoint.com/sites/staging_general";
+            
             //ClientContext = LoadClientContext(locationUrl);
             _bptConfiguration = bptConfiguration;
         }

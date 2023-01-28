@@ -14,7 +14,7 @@ namespace ContainerUploadAzure
     {
         static async Task Main(string[] args)
         {
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=bptagenttest;AccountKey=G75szURVcqAnUE/CazKYOfuFsgY9NdNnlcPhqp1pCFH8Uk38xj7xqv9FCq8SY6ImUS6ygfUAsjQSGMwqwNCoig==;EndpointSuffix=core.windows.net";
+           
             var blobServiceClient = new BlobServiceClient(connectionString);
 
             //await Upload(blobServiceClient);

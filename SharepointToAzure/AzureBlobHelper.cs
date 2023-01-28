@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
-using Eurofins.BPT.Caching;
+
 using System;
 using System.Collections.Generic;
 using System.Configuration;

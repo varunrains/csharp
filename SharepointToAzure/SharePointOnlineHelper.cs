@@ -1,4 +1,4 @@
-﻿using Eurofins.BPT.Caching;
+﻿
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace SharepointToAzure
         private readonly MemoryCacheContext _memoryCacheContext;
         public SharePointOnlineHelper(MemoryCacheContext memoryCacheContext)
         {
-            //var locationUrl = "https://eurofinsbpt.sharepoint.com/sites/staging_general";
+           
             //ClientContext = LoadClientContext(locationUrl);
             _memoryCacheContext = memoryCacheContext;
         }

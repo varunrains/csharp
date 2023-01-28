@@ -14,7 +14,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=bptagent;AccountKey=zai9Sqbw/DsvPLVyuU35sBrCCahmimb9wsTlayVIjlKRk8wgGC8hj10VQTvWt09WKXav1YKzESmkc5K3mVlGHw==;EndpointSuffix=core.windows.net");
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("");
             HttpClientHandler handler = new HttpClientHandler();
             handler.ClientCertificateOptions = ClientCertificateOption.Manual;
             handler.SslProtocols = SslProtocols.Tls12;
@@ -23,10 +23,7 @@ namespace ConsoleApp1
             handler.ClientCertificates.Add(certificate);
             handler.UseDefaultCredentials = false;
             handler.PreAuthenticate = true;
-            //stlimdevqueues.blob.dev.eurofinsbpt.com
-            //handler.
-            //DelegatingHandlerImpl delegatingHandlerImpl = new DelegatingHandlerImpl(handler);
-           // CloudBlobClient 
+           
              CloudQueueClient cloudQueueClient = new CloudQueueClient(storageAccount.QueueStorageUri, storageAccount.Credentials);
             var queue = cloudQueueClient.GetQueueReference("queue1");
             var ds = queue.GetMessage();

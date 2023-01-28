@@ -22,7 +22,7 @@ namespace SharepointToAzureCore
         private  BlockBlobClient GetBlockBlobClient(string locationUrl, string fileUrl, bool createIfNotExists = true)
         {
             var containerName = locationUrl.GetContainerName();
-            //var connectionString = "DefaultEndpointsProtocol=https;AccountName=bptagent;AccountKey=zai9Sqbw/DsvPLVyuU35sBrCCahmimb9wsTlayVIjlKRk8wgGC8hj10VQTvWt09WKXav1YKzESmkc5K3mVlGHw==;EndpointSuffix=core.windows.net";
+            
             BlobContainerClient containerClient = new BlobContainerClient(_bptConfiguration.Value.AzureBlobConnectionString, containerName.ToLower());
 
             try

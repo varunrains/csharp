@@ -1,4 +1,4 @@
-﻿using Eurofins.BPT.Caching;
+﻿
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace SharepointToAzure
         private const int CacheDuration = 100;
         public SharePointOnPremHelper(MemoryCacheContext memoryCacheContext)
         {
-            //var baseSiteUrl = "http://in01apvt144/eLIMS-BPT";
+           
             //ClientContext = LoadClientContext(baseSiteUrl);
             _memoryCacheContext = memoryCacheContext;
         }
