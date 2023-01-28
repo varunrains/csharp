@@ -21,7 +21,7 @@ namespace SharepointToAzureCore
         private const int CacheDuration = 100;
         public SharePointOnPremHelper(IOptions<BptConfiguration> bptConfiguration)
         {
-            //var baseSiteUrl = "http://in01apvt144/eLIMS-BPT";
+            
             //ClientContext = LoadClientContext(baseSiteUrl);
             _bptConfiguration = bptConfiguration;
             //_memoryCacheContext = memoryCacheContext;

@@ -36,7 +36,7 @@ namespace SharepointToAzureCore
                     services.AddSingleton<SharePointOnPremHelper>();
                     services.AddSingleton<AzureBlobHelper>();
                     //services.AddSingleton<MemoryCacheContext>();
-                    services.Configure<BptConfiguration>(options => hostContext.Configuration.GetSection("BptConfiguration").Bind(options));
+                    services.Configure<BptConfiguration>(options => hostContext.Configuration.GetSection("BConfiguration").Bind(options));
                 });
     }
 }

@@ -40,19 +40,19 @@ namespace AuthenticationUsingKeyVaultCertificate
             //));
             try
             {
-                var authority = "https://login.microsoftonline.com/eurofinsbpt.com/";
+                var authority = "";
                 var resource = "";
                 //Azure dev
-                //var clientIdUri = "api://EBPT-Dev-DatapackageScanner";
+                //var clientIdUri = "";
                 //QA 172
-                var clientIdUri = "api://EBPT-Dev-DataPackages";
+                var clientIdUri = "";
                 var authContext = new AuthenticationContext(authority);
 
-                byte[] data = Convert.FromBase64String("THJnNUI3MkI2VllCVmdsRyt5bG1hb1l1SzZXbGNuWUZyTW80RzhvQ3ZWMD0=");
+                byte[] data = Convert.FromBase64String();
                 string secret = Encoding.UTF8.GetString(data);
 
-                //Azure Dev Lrg5B72B6VYBVglG+ylmaoYuK6WlcnYFrMo4G8oCvV0=
-                var credential = new ClientCredential("0b6ae3f7-bd9d-43fc-acc4-8366ae41786e", secret);
+                //g5B72
+                var credential = new ClientCredential(, secret);
 
                 //QA 172
                // var credential = new ClientCredential("30dc1e16-39ae-49ca-9211-7423eaf8727f", "W1KbDWyXI7zI3AFMqFvy4ktwI91BzcUPGDIzY5VG5OY=");
@@ -97,7 +97,7 @@ namespace AuthenticationUsingKeyVaultCertificate
                 {
                     SetDestinationServiceToken(_restClient.DefaultRequestHeaders, to);
                     // _restClient.Timeout = TimeSpan.FromMinutes(_crossInstancePushConfiguration.ClientTimeoutMilliseconds);
-                    var d = _restClient.GetByteArrayAsync("https://datapackages.dev.eurofinsbpt.com/api/ScanFolders/GetScanFolders/010096a3-3028-4218-92ba-232728cf2fda").ConfigureAwait(false).GetAwaiter().GetResult();
+                    var d = _restClient.GetByteArrayAsync().ConfigureAwait(false).GetAwaiter().GetResult();
                     //var ds = _restClient.GetAsync("https://in01apvt172:65435/api/businessunits/6A22FA2C-E1B7-4FAE-89BF-04211C8E91F2").ConfigureAwait(false).GetAwaiter().GetResult();
                 }
             }catch(Exception e)
@@ -121,7 +121,7 @@ namespace AuthenticationUsingKeyVaultCertificate
               async (string authority, string resource, string scope) =>
               {
                   var authContext = new AuthenticationContext(authority);
-                  var credential = new ClientCredential("ffc1505f-c5c3-4565-91f0-64d59da4cc31", "Csu8Q~MR-0iZVDv~WeICooduOLxBH6rYwb7rLaWL");
+                  var credential = new ClientCredential();
                   AuthenticationResult result = await authContext.AcquireTokenAsync(resource, credential).ConfigureAwait(false);
                   if (result == null)
                   {
@@ -158,7 +158,6 @@ namespace AuthenticationUsingKeyVaultCertificate
             }
             catch (Exception ex)
             {
-                //_logger.Log($"Error while retrieving the certificate in the key vault path {itaagCode}-{serviceName}-{certificateName}", ex, BPT.Logging.LogLevel.Error);
                 return null;
             }
         }

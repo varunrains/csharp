@@ -12,7 +12,6 @@ namespace SharepointToAzureCore.DB
 {
     public class SodiumRepository
     {
-        public string SQL_Query = $"SELECT FileId, Type,Title,Url,CreatedOn,RepositoryType,LocationUrl,FolderUrl,SegmentationType FROM Sodium.Files F JOIN Sodium.RepositoryConfiguration RC ON F.RepositoryConfigurationId = RC.RepositoryConfigurationId  WHERE CreatedOn BETWEEN (@StartDate) AND(@EndDate) AND RepositoryType IN('Sharepoint','SharepointOnline') ORDER BY CreatedOn";
 
         public IOptions<BptConfiguration> _bptConfiguration;
         public SodiumRepository(IOptions<BptConfiguration> bptConfiguration)
