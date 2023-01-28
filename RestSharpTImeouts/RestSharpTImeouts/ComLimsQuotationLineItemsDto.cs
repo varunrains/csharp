@@ -17,7 +17,7 @@ namespace RestSharpTImeouts
         QuotedPrice QuotedPrice { get; set; }
     }
 
-    public class ComLimsQuotationLineItemsDto
+    public class QuotationLineItemsDto
     {
         public List<Item> Items { get; set; }
         public string QuotationCode { get; set; }

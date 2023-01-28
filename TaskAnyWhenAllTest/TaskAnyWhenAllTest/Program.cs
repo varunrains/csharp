@@ -99,7 +99,7 @@ namespace TaskAnyWhenAllTest
                     Password = "PASSWORD"
                 };
                 p._client.Timeout = 100000;
-                //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();
+                //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<msQuotationLineItemsDto>>();
                  var result = await p._client.ExecuteGetTaskAsync<dynamic>(request);
                  
                  return result.Data;
@@ -122,7 +122,7 @@ namespace TaskAnyWhenAllTest
                     Password = "PASSWORD"
             };
             p._client.Timeout = 100000;
-            //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();
+            //var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<msQuotationLineItemsDto>>();
             var result =  p._client.ExecuteGetTaskAsync<dynamic>(request).ConfigureAwait(false).GetAwaiter().GetResult();
 
             return result.Data;

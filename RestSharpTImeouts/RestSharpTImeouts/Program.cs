@@ -87,8 +87,8 @@ namespace RestSharpTImeouts
                 Password = "passs"
             };
            _client.Timeout = timeout;
-            var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<ComLimsQuotationLineItemsDto>>();
-            var t = _client.ExecuteAsync<ComLimsQuotationLineItemsDto>(request, respone => taskCompletionResponse.SetResult(respone));
+            var taskCompletionResponse = new TaskCompletionSource<RestSharp.IRestResponse<CsQuotationLineItemsDto>>();
+            var t = _client.ExecuteAsync<CsQuotationLineItemsDto>(request, respone => taskCompletionResponse.SetResult(respone));
             var result = taskCompletionResponse.Task.GetAwaiter().GetResult();
 
             Console.WriteLine(result.Data.QuotationCode);
