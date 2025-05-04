@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace LinkedInRecruiterScraper.Models
 {
-    public class HiringManager
+    public record HiringManager
     {
         public int Id { get; set; }
 
-        public string HiringManagerLink { get; set; }
+        public required string HiringManagerLink { get; set; }
 
-        public string ConnectionDegree { get; set; }
+        public required string ConnectionDegree { get; set; }
     }
 }

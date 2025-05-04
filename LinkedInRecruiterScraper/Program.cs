@@ -36,6 +36,8 @@ internal class Program
 
                 UIElementXPathHelper.NavigateToJobsSectionAndSearch(wait);
 
+                UIElementXPathHelper.NavigateToConfiguredRecentJobSection(wait);
+
                 int numberOfPagesToNavigate = 30;
 
                 for (int i = 2; i <= numberOfPagesToNavigate; i++)

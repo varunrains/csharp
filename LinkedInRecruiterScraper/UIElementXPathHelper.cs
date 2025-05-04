@@ -1,10 +1,5 @@
-﻿using OpenQA.Selenium.Support.UI;
-using OpenQA.Selenium;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System.Diagnostics.Metrics;
 
 namespace LinkedInRecruiterScraper
@@ -121,6 +116,38 @@ namespace LinkedInRecruiterScraper
             catch (Exception ex)
             {
                 Console.WriteLine($"Navigation failed for {counter} Please check the UI if the page number exists {ex}");
+            }
+        }
+
+        public static void NavigateToConfiguredRecentJobSection(WebDriverWait wait)
+        {
+            try
+            {
+                IWebElement recentJobSection = wait.Until(d => d.FindElement(By.XPath($"//button[@id=\"searchFilter_timePostedRange\"]")));
+                recentJobSection.Click();
+
+                Thread.Sleep(1000);
+                //Find the configurable past month text in the span and click the show button
+                //var recentJobDivPopup = wait.Until(d => d.FindElements(By.XPath($"//input[@name=\"date-posted-filter-value\"]")));
+                //The for label value is for past month 
+                //To change this we might have to find the values specifically.
+                //TODO:: This can be optimized in a better way
+                var recentJobDivPopup = wait.Until(d => d.FindElement(By.XPath($"//label[@for=\"timePostedRange-r2592000\"]")));
+                //var locationSpan = wait.Until(d => recentJobDivPopup.FindElements(By.ClassName("date-posted-filter-value")));
+                //Change this to show PastMonth, Past week , last 24hrs and anytime
+                //  var leb = recentJobDivPopup[1];
+                //  locationSpan.ElementAt(1).Click();
+                recentJobDivPopup.Click();
+                Thread.Sleep(4000);
+
+                IWebElement showResultsButton = wait.Until(d => d.FindElement(By.XPath($"//button[@aria-label='Cancel Date posted filter']/following::button[1]")));
+                showResultsButton.Click();
+                Thread.Sleep(3000);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Navigation failed when navingating to the recent job section which is configured. {ex}");
+                throw;
             }
         }
 
