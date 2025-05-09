@@ -1,6 +1,8 @@
 ﻿using LinkedInRecruiterScraper;
+using LinkedInRecruiterScraper.Configs;
 using LinkedInRecruiterScraper.Data;
 using LinkedInRecruiterScraper.Models;
+using Microsoft.Extensions.Configuration;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -8,17 +10,26 @@ using OpenQA.Selenium.Support.UI;
 
 internal class Program
 {
+   
     private static void Main(string[] args)
     {
-        string chromeDriverPath = @"F:\Softwares\WebDrivers\";
-        string pathForDB = @"C:\temp\LinkedInJobs.db";
+        var configuration = LoadConfigs();
+
+        var appSettings = configuration.GetSection("BasicConfiguration").Get<BasicConfiguration>();
+        var datePostedSettingsMapper = configuration.GetSection("DatePostedIds").AsEnumerable().ToArray();
+
+        var datePosted = datePostedSettingsMapper[appSettings!.DatePosted].Value;
+
+        string chromeDriverPath = appSettings!.ChromeDriverPath;
+        string pathForDB = appSettings!.SqlDbPath;
         var sqlLiteDB = new SQLLiteRepository(pathForDB);
 
         // Create Chrome options
         ChromeOptions options = new ChromeOptions();
 
         // Optional: Run in headless mode (uncomment if needed)
-       //  options.AddArgument("--headless");
+        if (appSettings.RunInHeadlessMode)
+            options.AddArgument("--headless");
 
         // Initialize ChromeDriver
         using (IWebDriver driver = new ChromeDriver(chromeDriverPath, options))
@@ -36,11 +47,9 @@ internal class Program
 
                 UIElementXPathHelper.NavigateToJobsSectionAndSearch(wait);
 
-                UIElementXPathHelper.NavigateToConfiguredRecentJobSection(wait);
+                UIElementXPathHelper.NavigateToConfiguredRecentJobSection(wait, datePosted);
 
-                int numberOfPagesToNavigate = 30;
-
-                for (int i = 2; i <= numberOfPagesToNavigate; i++)
+                for (int i = 2; i <= appSettings.NumberOfPagesToNavigate; i++)
                 {
                     
                     IList<IWebElement> listItems = wait.Until(d => d.FindElements(By.XPath("//li[@data-occludable-job-id]")));
@@ -100,5 +109,16 @@ internal class Program
         }
     }
 
-  
+
+    private static IConfiguration LoadConfigs()
+    {
+        var configuration = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory()) // Required to find appsettings.json
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .Build();
+
+        return configuration;
+    }
+
+
 }

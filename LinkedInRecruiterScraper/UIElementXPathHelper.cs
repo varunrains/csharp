@@ -1,6 +1,5 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
-using System.Diagnostics.Metrics;
 
 namespace LinkedInRecruiterScraper
 {
@@ -69,10 +68,6 @@ namespace LinkedInRecruiterScraper
                 Console.WriteLine($"Connection Degree {connectionDegree?.Text}");
                 return connectionDegree?.Text ?? string.Empty;
             }
-            //if (connectionDegree?.Text != "1st")
-            //{
-            //    return true;
-            //}
 
              return string.Empty;
         }
@@ -119,7 +114,7 @@ namespace LinkedInRecruiterScraper
             }
         }
 
-        public static void NavigateToConfiguredRecentJobSection(WebDriverWait wait)
+        public static void NavigateToConfiguredRecentJobSection(WebDriverWait wait, string datePosted)
         {
             try
             {
@@ -132,7 +127,7 @@ namespace LinkedInRecruiterScraper
                 //The for label value is for past month 
                 //To change this we might have to find the values specifically.
                 //TODO:: This can be optimized in a better way
-                var recentJobDivPopup = wait.Until(d => d.FindElement(By.XPath($"//label[@for=\"timePostedRange-r2592000\"]")));
+                var recentJobDivPopup = wait.Until(d => d.FindElement(By.XPath($"//label[@for={datePosted}]")));
                 //var locationSpan = wait.Until(d => recentJobDivPopup.FindElements(By.ClassName("date-posted-filter-value")));
                 //Change this to show PastMonth, Past week , last 24hrs and anytime
                 //  var leb = recentJobDivPopup[1];
