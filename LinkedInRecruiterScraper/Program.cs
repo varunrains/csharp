@@ -18,8 +18,10 @@ internal class Program
         var appSettings = configuration.GetSection("BasicConfiguration").Get<BasicConfiguration>();
         var datePostedSettingsMapper = configuration.GetSection("DatePostedIds").AsEnumerable().ToArray();
 
-        var datePosted = datePostedSettingsMapper[appSettings!.DatePosted].Value;
+        var datePosted = datePostedSettingsMapper[appSettings!.DatePosted]!.Value ?? string.Empty;
 
+        var techToSearch = appSettings.TechnologyToSearch;
+        var countryToSearch = appSettings.CountryToSearch;
         string chromeDriverPath = appSettings!.ChromeDriverPath;
         string pathForDB = appSettings!.SqlDbPath;
         var sqlLiteDB = new SQLLiteRepository(pathForDB);
@@ -45,7 +47,7 @@ internal class Program
 
                 UIElementXPathHelper.SignInToLinkedIn(wait);
 
-                UIElementXPathHelper.NavigateToJobsSectionAndSearch(wait);
+                UIElementXPathHelper.NavigateToJobsSectionAndSearch(wait, techToSearch, countryToSearch);
 
                 UIElementXPathHelper.NavigateToConfiguredRecentJobSection(wait, datePosted);
 

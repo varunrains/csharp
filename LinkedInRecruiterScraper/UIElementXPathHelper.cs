@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools.V132.IndexedDB;
 using OpenQA.Selenium.Support.UI;
 
 namespace LinkedInRecruiterScraper
@@ -78,25 +79,19 @@ namespace LinkedInRecruiterScraper
             return jobRoleDescriptionElement?.Text ?? string.Empty;
         }
 
-        //public static void WaitForCssClass(IWebDriver driver, By locator, string cssClass, TimeSpan timeout)
-        //{
-        //    WebDriverWait wait = new WebDriverWait(driver, timeout);
-        //    wait.Until(driver =>
-        //    {
-        //        IWebElement element = driver.FindElement(locator);
-        //        return element.GetAttribute("class")?.Contains(cssClass);
-        //    });
-        //}
 
-        public static void NavigateToJobsSectionAndSearch(WebDriverWait wait)
+        public static void NavigateToJobsSectionAndSearch(WebDriverWait wait, string techToSearch, string country)
         {
             IWebElement jobs = wait.Until(d => d.FindElement(By.XPath("//a[@href='https://www.linkedin.com/jobs/?']")));
             jobs.Click();
 
             wait.Until(d => d.Url.Contains("/jobs/"));
 
-            IWebElement searchInput = wait.Until(d => d.FindElement(By.XPath("//input[contains(@id,'jobs-search-box-keyword-id')]")));
-            searchInput.SendKeys(".net" + Keys.Enter);
+            IWebElement searchTech = wait.Until(d => d.FindElement(By.XPath("//input[contains(@id,'jobs-search-box-keyword-id')]")));
+            searchTech.SendKeys(techToSearch);
+
+            IWebElement searchCountry = wait.Until(d => d.FindElement(By.XPath("//input[contains(@id,'jobs-search-box-location-id')]")));
+            searchCountry.SendKeys(country + Keys.Enter);
 
             Thread.Sleep(3000);
         }
@@ -127,7 +122,7 @@ namespace LinkedInRecruiterScraper
                 //The for label value is for past month 
                 //To change this we might have to find the values specifically.
                 //TODO:: This can be optimized in a better way
-                var recentJobDivPopup = wait.Until(d => d.FindElement(By.XPath($"//label[@for={datePosted}]")));
+                var recentJobDivPopup = wait.Until(d => d.FindElement(By.XPath($"//label[@for=\"{datePosted}\"]")));
                 //var locationSpan = wait.Until(d => recentJobDivPopup.FindElements(By.ClassName("date-posted-filter-value")));
                 //Change this to show PastMonth, Past week , last 24hrs and anytime
                 //  var leb = recentJobDivPopup[1];
