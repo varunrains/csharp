@@ -90,8 +90,10 @@ namespace LinkedInRecruiterScraper
             IWebElement searchTech = wait.Until(d => d.FindElement(By.XPath("//input[contains(@id,'jobs-search-box-keyword-id')]")));
             searchTech.SendKeys(techToSearch);
 
+
             IWebElement searchCountry = wait.Until(d => d.FindElement(By.XPath("//input[contains(@id,'jobs-search-box-location-id')]")));
-            searchCountry.SendKeys(country + Keys.Enter);
+            searchCountry.Clear();
+            searchCountry.SendKeys(country+ Keys.Enter);
 
             Thread.Sleep(3000);
         }
