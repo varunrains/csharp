@@ -1,0 +1,6 @@
+/bin
+/obj
+
+# Environment files (contains secrets)
+.env
+*.env.local
